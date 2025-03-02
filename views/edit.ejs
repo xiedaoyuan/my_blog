@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>编辑文章</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>编辑文章</h1>
+    <form action="/articles/<%= article._id %>" method="POST" class="form-container">
+      <div>
+        <label for="title">标题:</label>
+        <input type="text" id="title" name="title" value="<%= article.title %>" required>
+      </div>
+      <div>
+        <label for="category">分类:</label>
+        <select id="category" name="category" required>
+          <% categories.forEach(cat => { %>
+            <option value="<%= cat %>" <%= article.category === cat ? 'selected' : '' %>><%= cat %></option>
+          <% }) %>
+        </select>
+      </div>
+      <div>
+        <label for="tags">标签（用逗号分隔）:</label>
+        <input type="text" id="tags" name="tags" value="<%= article.tags.join(', ') %>">
+      </div>
+      <div>
+        <label for="content">内容:</label>
+        <textarea id="content" name="content" required><%= article.content %></textarea>
+      </div>
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="isDraft" <%= article.isDraft ? 'checked' : '' %>>
+          <span>保存为草稿</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="isPinned" <%= article.isPinned ? 'checked' : '' %>>
+          <span>置顶文章</span>
+        </label>
+      </div>
+      <div class="button-group">
+        <button type="submit" class="btn-primary">保存修改</button>
+        <a href="/" class="btn-secondary">返回首页</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>注册</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>注册</h1>
+    <form action="/register" method="POST">
+      <div>
+        <label for="username">用户名:</label>
+        <input type="text" id="username" name="username" required>
+      </div>
+      <div>
+        <label for="password">密码:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit">注册</button>
+    </form>
+    <a href="/login">已有账户？去登录</a>
+  </div>
+</body>
+</html>

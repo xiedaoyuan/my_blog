@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>我的草稿</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>我的草稿</h1>
+    <p>欢迎, <%= user.username %>! <a href="/logout">退出</a></p>
+    <a href="/create">写新文章</a>
+    <a href="/">返回首页</a>
+    <ul>
+      <% articles.forEach(article => { %>
+        <li>
+          <h2><%= article.title %></h2>
+          <p><%= article.content %></p>
+          <small>保存于: <%= article.createdAt.toLocaleDateString() %> | 分类: <%= article.category %></small>
+          <div class="actions">
+            <a href="/articles/<%= article._id %>/edit">编辑</a>
+            <form action="/articles/<%= article._id %>/delete" method="POST" style="display:inline;">
+              <button type="submit" class="delete-btn">删除</button>
+            </form>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+  </div>
+</body>
+</html>

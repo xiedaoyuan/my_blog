@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>我的博客</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>博客文章</h1>
+    <% if (user) { %>
+      <p>欢迎, <%= user.username %>! <a href="/logout">退出</a></p>
+      <a href="/create">写新文章</a> | <a href="/drafts">我的草稿</a>
+    <% } else { %>
+      <p><a href="/login">登录</a> | <a href="/register">注册</a></p>
+    <% } %>
+    <!-- 搜索表单和后续内容保持不变 -->
+    <form action="/search" method="GET" class="search-form">
+      <input type="text" name="keyword" placeholder="搜索文章..." value="<%= searchKeyword || '' %>">
+      <button type="submit">搜索</button>
+    </form>
+    <% if (searchKeyword) { %>
+      <p class="search-result">搜索 “<%= searchKeyword %>” 的结果：<%= articles.length %> 篇</p>
+    <% } %>
+    <div class="categories">
+      <span>分类: </span>
+      <a href="/" <%= !category ? 'class="active"' : '' %>>全部</a>
+      <a href="/category/技术" <%= category === '技术' ? 'class="active"' : '' %>>技术</a>
+      <a href="/category/生活" <%= category === '生活' ? 'class="active"' : '' %>>生活</a>
+      <a href="/category/旅行" <%= category === '旅行' ? 'class="active"' : '' %>>旅行</a>
+    </div>
+    <ul>
+      <% articles.forEach(article => { %>
+        <li>
+          <h2><%= article.title %> <%= article.isPinned ? '<span class="pinned">置顶</span>' : '' %></h2>
+          <p><%= article.content %></p>
+          <small>发布于: <%= article.createdAt.toLocaleDateString() %> | 分类: <%= article.category %></small>
+          <p>标签: <%= article.tags.length > 0 ? article.tags.join(', ') : '无' %></p>
+          <% if (user && article.author && article.author.toString() === user._id.toString()) { %>
+            <div class="actions">
+              <a href="/articles/<%= article._id %>/edit">编辑</a>
+              <form action="/articles/<%= article._id %>/delete" method="POST" style="display:inline;">
+                <button type="submit" class="delete-btn">删除</button>
+              </form>
+            </div>
+          <% } %>
+          <div class="comments">
+            <h3>评论</h3>
+            <% comments.filter(comment => comment.article.toString() === article._id.toString()).forEach(comment => { %>
+              <div class="comment">
+                <div class="comment-content">
+                  <p><%= comment.content %></p>
+                  <small>由 <%= comment.author ? comment.author.username : '未知用户' %> 发表于 <%= comment.createdAt.toLocaleDateString() %></small>
+                </div>
+                <% if (user && comment.author && comment.author._id.toString() === user._id.toString()) { %>
+                  <form action="/comments/<%= comment._id %>/delete" method="POST" class="delete-form">
+                    <button type="submit" class="delete-comment-btn">删除</button>
+                  </form>
+                <% } %>
+              </div>
+            <% }) %>
+            <% if (user) { %>
+              <form action="/articles/<%= article._id %>/comment" method="POST" class="form-container">
+                <textarea name="content" placeholder="写下你的评论..." required></textarea>
+                <button type="submit">发表评论</button>
+              </form>
+            <% } else { %>
+              <p><a href="/login">登录</a> 后即可发表评论</p>
+            <% } %>
+          </div>
+        </li>
+      <% }) %>
+    </ul>
+    <!-- 分页导航 -->
+    <!-- 分页导航 -->
+    <!-- 分页导航 -->
+    <div class="pagination">
+      <% if (page > 1) { %>
+        <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + (page - 1) : (category ? '/category/' + category + '?page=' + (page - 1) : '?page=' + (page - 1)) %>">上一页</a>
+      <% } %>
+
+      <% if (totalPages <= 7) { %>
+        <!-- 如果总页数少于等于7，显示所有页码 -->
+        <% for (let i = 1; i <= totalPages; i++) { %>
+          <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + i : (category ? '/category/' + category + '?page=' + i : '?page=' + i) %>" <%= page === i ? 'class="active"' : '' %>><%= i %></a>
+        <% } %>
+      <% } else { %>
+        <!-- 如果总页数大于7，使用省略号逻辑 -->
+        <% if (page <= 4) { %>
+          <% for (let i = 1; i <= 5; i++) { %>
+            <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + i : (category ? '/category/' + category + '?page=' + i : '?page=' + i) %>" <%= page === i ? 'class="active"' : '' %>><%= i %></a>
+          <% } %>
+          <span>...</span>
+          <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + totalPages : (category ? '/category/' + category + '?page=' + totalPages : '?page=' + totalPages) %>"><%= totalPages %></a>
+        <% } else if (page > 4 && page < totalPages - 3) { %>
+          <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=1' : (category ? '/category/' + category + '?page=1' : '?page=1') %>">1</a>
+          <span>...</span>
+          <% for (let i = page - 2; i <= page + 2; i++) { %>
+            <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + i : (category ? '/category/' + category + '?page=' + i : '?page=' + i) %>" <%= page === i ? 'class="active"' : '' %>><%= i %></a>
+          <% } %>
+          <span>...</span>
+          <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + totalPages : (category ? '/category/' + category + '?page=' + totalPages : '?page=' + totalPages) %>"><%= totalPages %></a>
+        <% } else { %>
+          <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=1' : (category ? '/category/' + category + '?page=1' : '?page=1') %>">1</a>
+          <span>...</span>
+          <% for (let i = totalPages - 4; i <= totalPages; i++) { %>
+            <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + i : (category ? '/category/' + category + '?page=' + i : '?page=' + i) %>" <%= page === i ? 'class="active"' : '' %>><%= i %></a>
+          <% } %>
+        <% } %>
+      <% } %>
+
+      <% if (page < totalPages) { %>
+        <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + (page + 1) : (category ? '/category/' + category + '?page=' + (page + 1) : '?page=' + (page + 1)) %>">下一页</a>
+      <% } %>
+
+      <!-- 输入跳转 -->
+      <form action="<%= searchKeyword ? '/search' : (category ? '/category/' + category : '/') %>" method="GET" class="page-jump">
+        <input type="number" name="page" min="1" max="<%= totalPages %>" value="<%= page %>" placeholder="页码">
+        <% if (searchKeyword) { %>
+          <input type="hidden" name="keyword" value="<%= searchKeyword %>">
+        <% } %>
+        <button type="submit">跳转</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
