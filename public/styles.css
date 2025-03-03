@@ -273,6 +273,28 @@ textarea {
   box-shadow: 0 6px 15px rgba(138, 43, 226, 0.5);
 }
 
+/* 评论切换按钮样式 */
+.comment-toggle-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #32cd32, #7fff00); /* 绿色渐变 */
+  color: #ffffff;
+  border: 1px solid rgba(50, 205, 50, 0.8); /* 绿色边框 */
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(50, 205, 50, 0.3); /* 绿色光晕 */
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  cursor: pointer;
+}
+
+.comment-toggle-btn:hover {
+  background: linear-gradient(90deg, #228b22, #32cd32); /* 悬浮时深绿色渐变 */
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(50, 205, 50, 0.5);
+}
+
 /* 分类筛选样式 */
 .categories {
   margin: 25px 0;

@@ -20,14 +20,55 @@
           <p><%= article.content %></p>
           <small>保存于: <%= article.createdAt.toLocaleDateString() %> | 分类: <%= article.category %></small>
           <div class="actions">
-            <a href="/articles/<%= article._id %>/edit"class="edit-btn">编辑</a>
+            <a href="/articles/<%= article._id %>/edit" class="edit-btn">编辑</a>
             <form action="/articles/<%= article._id %>/delete" method="POST" style="display:inline;">
               <button type="submit" class="delete-btn">删除</button>
             </form>
+            <button class="comment-toggle-btn" data-article-id="<%= article._id %>">评论</button>
+          </div>
+          <!-- 评论区域，默认隐藏 -->
+          <div class="comments" id="comments-<%= article._id %>" style="display: none;">
+            <h3>评论</h3>
+            <% comments.filter(comment => comment.article.toString() === article._id.toString()).forEach(comment => { %>
+              <div class="comment">
+                <div class="comment-content">
+                  <p><%= comment.content %></p>
+                  <small>由 <%= comment.author ? comment.author.username : '未知用户' %> 发表于 <%= comment.createdAt.toLocaleDateString() %></small>
+                </div>
+                <% if (user && comment.author && comment.author._id.toString() === user._id.toString()) { %>
+                  <form action="/comments/<%= comment._id %>/delete" method="POST" class="delete-form">
+                    <button type="submit" class="delete-comment-btn">删除</button>
+                  </form>
+                <% } %>
+              </div>
+            <% }) %>
+            <% if (user) { %>
+              <form action="/articles/<%= article._id %>/comment" method="POST" class="form-container">
+                <textarea name="content" placeholder="写下你的评论..." required></textarea>
+                <button type="submit" class="btn-comment">发表评论</button>
+              </form>
+            <% } else { %>
+              <p><a href="/login">登录</a> 后即可发表评论</p>
+            <% } %>
           </div>
         </li>
       <% }) %>
     </ul>
   </div>
+  <script>
+    document.querySelectorAll('.comment-toggle-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const articleId = button.getAttribute('data-article-id');
+        const commentsSection = document.getElementById(`comments-${articleId}`);
+        if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
+          commentsSection.style.display = 'block';
+          button.textContent = '收起评论';
+        } else {
+          commentsSection.style.display = 'none';
+          button.textContent = '评论';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
