@@ -31,23 +31,21 @@
         <label for="content">内容:</label>
         <textarea id="content" name="content" required></textarea>
       </div>
-      <div>
-        <label><input type="checkbox" name="isDraft" checked> 保存为草稿</label>
-        <label><input type="checkbox" name="isPinned"> 置顶文章</label>
+      <div class="checkbox-group">
+        <label class="checkbox-label">
+          <input type="checkbox" name="isDraft" checked>
+          <span>保存为草稿</span>
+        </label>
+        <label class="checkbox-label">
+          <input type="checkbox" name="isPinned">
+          <span>置顶文章</span>
+        </label>
       </div>
-      <button type="submit">提交</button>
+      <div class="button-group">
+        <button type="submit" class="btn-primary">提交</button>
+        <a href="/" class="btn-secondary">返回首页</a>
+      </div>
     </form>
-    <a href="/">返回首页</a>
-  </div>
-  <div class="checkbox-group">
-    <label class="checkbox-label">
-      <input type="checkbox" name="isDraft" checked>
-      <span>保存为草稿</span>
-    </label>
-    <label class="checkbox-label">
-      <input type="checkbox" name="isPinned">
-      <span>置顶文章</span>
-    </label>
   </div>
 </body>
 </html>

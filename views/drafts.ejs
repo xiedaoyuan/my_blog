@@ -20,7 +20,7 @@
           <p><%= article.content %></p>
           <small>保存于: <%= article.createdAt.toLocaleDateString() %> | 分类: <%= article.category %></small>
           <div class="actions">
-            <a href="/articles/<%= article._id %>/edit">编辑</a>
+            <a href="/articles/<%= article._id %>/edit"class="edit-btn">编辑</a>
             <form action="/articles/<%= article._id %>/delete" method="POST" style="display:inline;">
               <button type="submit" class="delete-btn">删除</button>
             </form>
