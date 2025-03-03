@@ -345,16 +345,62 @@ textarea {
   display: flex;
   gap: 12px;
   align-items: center;
+  position: relative; /* 用于伪元素定位 */
 }
 
 .search-form input {
-  border: 1px solid rgba(0, 191, 255, 0.7);
-  background: rgba(15, 23, 42, 0.9);
+  width: 70%;
+  padding: 14px 40px 14px 20px; /* 右侧留空间给图标 */
+  border: none; /* 移除默认边框，使用渐变替代 */
+  border-radius: 25px; /* 更圆润的科技感 */
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.9)); /* 渐变背景 */
+  color: #f1f5f9;
+  font-size: 1em;
+  box-sizing: border-box;
+  box-shadow: inset 0 0 5px rgba(0, 191, 255, 0.3), 0 0 10px rgba(0, 191, 255, 0.2); /* 内阴影和外光晕 */
+  transition: width 0.3s, box-shadow 0.3s;
+}
+
+.search-form input:focus {
+  width: 75%; /* 聚焦时略微扩展 */
+  box-shadow: inset 0 0 5px rgba(0, 191, 255, 0.5), 0 0 15px rgba(0, 191, 255, 0.6);
+  background: linear-gradient(90deg, rgba(15, 23, 42, 1), rgba(30, 41, 59, 1));
+  outline: none;
+}
+
+.search-form input::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+
+/* 搜索图标伪元素 */
+.search-form input::after {
+  content: '\1F50D'; /* 放大镜 Unicode */
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #00bfff;
+  font-size: 1.2em;
 }
 
 .search-form button {
   padding: 12px 24px;
-  border: 1px solid rgba(0, 191, 255, 0.8); /* 显式边框 */
+  background: linear-gradient(90deg, #00bfff, #1e90ff);
+  color: #ffffff;
+  border: 1px solid rgba(0, 191, 255, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(0, 191, 255, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+.search-form button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0, 191, 255, 0.5);
 }
 
 /* 分页导航样式 */
