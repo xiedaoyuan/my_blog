@@ -194,6 +194,23 @@ textarea {
   transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
 }
 
+.btn-secondary1 {
+  display: inline-block;
+  padding: 14px 28px;
+  background: rgba(30, 41, 59, 0.9);
+  color: #f1f5f9;
+  border: 1px solid rgba(0, 191, 255, 0.8);
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1.1em;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 0 5px rgba(0, 191, 255, 0.2);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  position: relative;
+  top: 20px;
+}
+
 .btn-secondary:hover {
   background: rgba(30, 41, 59, 1);
   transform: translateY(-4px);
@@ -220,6 +237,21 @@ textarea {
   background: rgba(30, 41, 59, 1);
   transform: translateY(-3px);
   box-shadow: 0 6px 15px rgba(0, 191, 255, 0.4);
+}
+
+.btn-jump{
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #0770e7, #0659e8);
+  color: #ffffff;
+  border: 1px solid rgba(7, 105, 243, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(138, 43, 226, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  text-decoration: none;
 }
 
 /* 操作按钮容器 */
@@ -570,6 +602,148 @@ textarea {
   vertical-align: middle;
   box-shadow: 0 0 5px rgba(0, 191, 255, 0.4);
 }
+
+.logout-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #1ae9b5, #6cc816);
+  color: #ffffff;
+  border: 1px solid rgba(29, 203, 81, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(13, 198, 63, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  text-decoration: none;
+}
+
+.create-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #cce581, #d9f506);
+  color: #ffffff;
+  border: 1px solid rgba(202, 235, 19, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(156, 223, 12, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  text-decoration: none;
+}
+
+.drafts-btn{
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #f79e04, #f09815);
+  color: #ffffff;
+  border: 1px solid rgba(175, 114, 23, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(241, 140, 7, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  text-decoration: none;
+}
+
+.login-btn{
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #04f73d, #f09815);
+  color: #ffffff;
+  border: 1px solid rgba(47, 144, 118, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(27, 128, 112, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  text-decoration: none;
+}
+
+.register-btn{
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #f70404, #f09815);
+  color: #ffffff;
+  border: 1px solid rgba(169, 28, 160, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(34, 47, 148, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  text-decoration: none;
+}
+
+.log-btn{
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #04f17a, #f09815);
+  color: #ffffff;
+  border: 1px solid rgba(47, 144, 118, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(27, 128, 112, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  text-decoration: none;
+  position: relative; /* 或使用 absolute  */  
+  top: 12px;
+}
+
+.home-btn{
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #f79e04, #f09815);
+  color: #ffffff;
+  border: 1px solid rgba(175, 114, 23, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(241, 140, 7, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  text-decoration: none;
+}
+
+.register-word{
+  color: #f70404;
+}
+
+.reg-btn{
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #04f17a, #f09815);
+  color: #ffffff;
+  border: 1px solid rgba(47, 144, 118, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(27, 128, 112, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  text-decoration: none;
+  position: relative; /* 或使用 absolute  */  
+  top: 12px;
+}
+
+.login-link{
+  position: relative;
+  top: 20px;
+  color:#04f17a
+}
+
+.article-title{
+  color:#00bfff;
+  font-weight: bold;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  text-decoration: none;
+}
+
 
 /* 响应式设计 */
 @media (max-width: 600px) {

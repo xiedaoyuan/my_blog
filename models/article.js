@@ -8,7 +8,8 @@ const articleSchema = new mongoose.Schema({
   category: { type: String, required: true },
   tags: [{ type: String }],
   isDraft: { type: Boolean, default: true }, // 新增草稿字段，默认 true
-  isPinned: { type: Boolean, default: false } // 新增置顶字段，默认 false
+  isPinned: { type: Boolean, default: false } ,// 新增置顶字段，默认 false
+  views: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model('Article', articleSchema);

@@ -10,15 +10,19 @@
 <body>
   <div class="container">
     <h1>我的草稿</h1>
-    <p>欢迎, <%= user.username %>! <a href="/logout">退出</a></p>
-    <a href="/create">写新文章</a>
-    <a href="/">返回首页</a>
+    <p>欢迎, <%= user.username %>! <a href="/logout"class="logout-btn">退出</a></p>
+    <a href="/create"class="create-btn">写新文章</a> |
+    <a href="/"class="home-btn">返回首页</a>
     <ul>
       <% articles.forEach(article => { %>
         <li>
-          <h2><%= article.title %></h2>
+          <h2><%- article.title %><%- article.isPinned ? '<span class="pinned">置顶</span>' : '' %></h2>
           <p><%= article.content %></p>
-          <small>保存于: <%= article.createdAt.toLocaleDateString() %> | 分类: <%= article.category %></small>
+          <small>
+            保存于: <%= article.createdAt.toLocaleDateString() %> | 
+            分类: <%= article.category %> | 
+            阅读: <%= article.views %> 次
+          </small>
           <div class="actions">
             <a href="/articles/<%= article._id %>/edit" class="edit-btn">编辑</a>
             <form action="/articles/<%= article._id %>/delete" method="POST" style="display:inline;">
@@ -43,7 +47,7 @@
               </div>
             <% }) %>
             <% if (user) { %>
-              <form action="/articles/<%= article._id %>/comment" method="POST" class="form-container">
+              <form action="/articles/<%= article._id %>/comment" method="POST">
                 <textarea name="content" placeholder="写下你的评论..." required></textarea>
                 <button type="submit" class="btn-comment">发表评论</button>
               </form>

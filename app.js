@@ -92,6 +92,23 @@ app.get('/create', ensureAuthenticated, (req, res) => {
 });
 
 
+// 路由：查看单篇文章详情
+app.get('/articles/:id', async (req, res) => {
+  try {
+    const article = await Article.findById(req.params.id);
+    if (!article) {
+      return res.status(404).send('文章未找到');
+    }
+    article.views += 1; // 增加阅读计数
+    await article.save();
+    const comments = await Comment.find({ article: req.params.id }).populate('author', 'username');
+    res.render('article', { article, comments, user: req.user });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('服务器错误');
+  }
+});
+
 // 路由：编辑文章页面
 app.get('/articles/:id/edit', ensureAuthenticated, async (req, res) => {
   const article = await Article.findById(req.params.id);
@@ -253,7 +270,8 @@ app.post('/articles/:id', ensureAuthenticated, async (req, res) => {
 // 路由：查看草稿
 app.get('/drafts', ensureAuthenticated, async (req, res) => {
   const articles = await Article.find({ author: req.user._id, isDraft: true }).sort({ createdAt: -1 });
-  res.render('drafts', { articles, user: req.user });
+  const comments = await Comment.find().populate('author', 'username');
+  res.render('drafts', { articles, user: req.user, comments });
 });
 // 启动服务器
 app.listen(3000, () => {

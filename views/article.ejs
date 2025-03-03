@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title><%= article.title %></title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1><%= article.title %> <%- article.isPinned ? '<span class="pinned">置顶</span>' : '' %></h1>
+    <p><%= article.content %></p>
+    <small>
+      发布于: <%= article.createdAt.toLocaleDateString() %> | 
+      分类: <%= article.category %> | 
+      阅读: <%= article.views %> 次
+    </small>
+    <p>标签: <%= article.tags.length > 0 ? article.tags.join(', ') : '无' %></p>
+    <% if (user && article.author && article.author.toString() === user._id.toString()) { %>
+      <div class="actions">
+        <a href="/articles/<%= article._id %>/edit" class="edit-btn">编辑</a>
+        <form action="/articles/<%= article._id %>/delete" method="POST" style="display:inline;">
+          <button type="submit" class="delete-btn">删除</button>
+        </form>
+        <button class="comment-toggle-btn" data-article-id="<%= article._id %>">评论</button>
+      </div>
+    <% } %>
+    <div class="comments" id="comments-<%= article._id %>" style="display: none;">
+      <h3>评论</h3>
+      <% if (comments && comments.length > 0) { %>
+        <% comments.forEach(comment => { %>
+          <div class="comment">
+            <div class="comment-content">
+              <p><%= comment.content %></p>
+              <small>由 <%= comment.author ? comment.author.username : '未知用户' %> 发表于 <%= comment.createdAt.toLocaleDateString() %></small>
+            </div>
+            <% if (user && comment.author && comment.author._id.toString() === user._id.toString()) { %>
+              <form action="/comments/<%= comment._id %>/delete" method="POST" class="delete-form">
+                <button type="submit" class="delete-comment-btn">删除</button>
+              </form>
+            <% } %>
+          </div>
+        <% }) %>
+      <% } else { %>
+        <p>暂无评论</p>
+      <% } %>
+      <% if (user) { %>
+        <form action="/articles/<%= article._id %>/comment" method="POST" class="form-container">
+          <textarea name="content" placeholder="写下你的评论..." required></textarea>
+          <button type="submit" class="btn-comment">发表评论</button>
+        </form>
+      <% } else { %>
+        <p><a href="/login">登录</a> 后即可发表评论</p>
+      <% } %>
+    </div>
+    <a href="/" class="btn-secondary1">返回首页</a>
+  </div>
+  <script>
+    document.querySelectorAll('.comment-toggle-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const articleId = button.getAttribute('data-article-id');
+        const commentsSection = document.getElementById(`comments-${articleId}`);
+        if (commentsSection.style.display === 'none' || commentsSection.style.display === '') {
+          commentsSection.style.display = 'block';
+          button.textContent = '收起评论';
+        } else {
+          commentsSection.style.display = 'none';
+          button.textContent = '评论';
+        }
+      });
+    });
+  </script>
+</body>
+</html>

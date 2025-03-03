@@ -11,10 +11,10 @@
   <div class="container">
     <h1>博客文章</h1>
     <% if (user) { %>
-      <p>欢迎, <%= user.username %>! <a href="/logout">退出</a></p>
-      <a href="/create">写新文章</a> | <a href="/drafts">我的草稿</a>
+      <p>欢迎, <%= user.username %>! <a href="/logout"class="logout-btn">退出</a></p>
+      <a href="/create"class="create-btn">写新文章</a> | <a href="/drafts"class="drafts-btn">我的草稿</a>
     <% } else { %>
-      <p><a href="/login">登录</a> | <a href="/register">注册</a></p>
+      <p><a href="/login"class="login-btn">登录</a> | <a href="/register"class="register-btn">注册</a></p>
     <% } %>
     <!-- 搜索表单和后续内容保持不变 -->
     <form action="/search" method="GET" class="search-form">
@@ -34,9 +34,13 @@
     <ul>
       <% articles.forEach(article => { %>
         <li>
-          <h2><%= article.title %> <%= article.isPinned ? '<span class="pinned">置顶</span>' : '' %></h2>
+          <h2><a href="/articles/<%= article._id %>"class="article-title"><%- article.title %></a> <%- article.isPinned ? '<span class="pinned">置顶</span>' : '' %></h2>
           <p><%= article.content %></p>
-          <small>发布于: <%= article.createdAt.toLocaleDateString() %> | 分类: <%= article.category %></small>
+          <small>
+            发布于: <%= article.createdAt.toLocaleDateString() %> | 
+            分类: <%= article.category %> | 
+            阅读: <%= article.views %> 次
+          </small>
           <p>标签: <%= article.tags.length > 0 ? article.tags.join(', ') : '无' %></p>
           <% if (user && article.author && article.author.toString() === user._id.toString()) { %>
             <div class="actions">
@@ -47,7 +51,6 @@
               <button class="comment-toggle-btn" data-article-id="<%= article._id %>">评论</button>
             </div>
           <% } %>
-          <!-- 评论区域，默认隐藏 -->
           <div class="comments" id="comments-<%= article._id %>" style="display: none;">
             <h3>评论</h3>
             <% comments.filter(comment => comment.article.toString() === article._id.toString()).forEach(comment => { %>
@@ -64,7 +67,7 @@
               </div>
             <% }) %>
             <% if (user) { %>
-              <form action="/articles/<%= article._id %>/comment" method="POST" class="form-container">
+              <form action="/articles/<%= article._id %>/comment" method="POST">
                 <textarea name="content" placeholder="写下你的评论..." required></textarea>
                 <button type="submit" class="btn-comment">发表评论</button>
               </form>
@@ -75,9 +78,6 @@
         </li>
       <% }) %>
     </ul>
-    <!-- 分页导航 -->
-    <!-- 分页导航 -->
-    <!-- 分页导航 -->
     <div class="pagination">
       <% if (page > 1) { %>
         <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + (page - 1) : (category ? '/category/' + category + '?page=' + (page - 1) : '?page=' + (page - 1)) %>">上一页</a>
@@ -123,7 +123,7 @@
         <% if (searchKeyword) { %>
           <input type="hidden" name="keyword" value="<%= searchKeyword %>">
         <% } %>
-        <button type="submit">跳转</button>
+        <button type="submit"class="btn-jump">跳转</button>
       </form>
     </div>
   </div>
