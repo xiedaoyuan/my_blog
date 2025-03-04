@@ -118,7 +118,7 @@ app.get('/articles/:id/edit', ensureAuthenticated, async (req, res) => {
   res.render('edit', { article, categories: ['技术', '生活', '旅行', '其他'] });
 });
 
-
+//路由：评论文章
 app.post('/articles/:id/comment', ensureAuthenticated, async (req, res) => {
   const { content } = req.body;
   const comment = new Comment({
@@ -130,7 +130,6 @@ app.post('/articles/:id/comment', ensureAuthenticated, async (req, res) => {
   res.redirect('/');
 });
 
-// ... 其他代码保持不变 ...
 
 // 路由：删除文章
 app.post('/articles/:id/delete', ensureAuthenticated, async (req, res) => {
@@ -250,6 +249,7 @@ app.post('/articles', ensureAuthenticated, async (req, res) => {
   res.redirect('/');
 });
 
+// 路由：更新文章
 app.post('/articles/:id', ensureAuthenticated, async (req, res) => {
   const { title, content, category, tags, isDraft, isPinned } = req.body;
   const article = await Article.findById(req.params.id);

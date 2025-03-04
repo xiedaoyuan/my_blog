@@ -84,12 +84,10 @@
       <% } %>
 
       <% if (totalPages <= 7) { %>
-        <!-- 如果总页数少于等于7，显示所有页码 -->
         <% for (let i = 1; i <= totalPages; i++) { %>
           <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + i : (category ? '/category/' + category + '?page=' + i : '?page=' + i) %>" <%= page === i ? 'class="active"' : '' %>><%= i %></a>
         <% } %>
       <% } else { %>
-        <!-- 如果总页数大于7，使用省略号逻辑 -->
         <% if (page <= 4) { %>
           <% for (let i = 1; i <= 5; i++) { %>
             <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + i : (category ? '/category/' + category + '?page=' + i : '?page=' + i) %>" <%= page === i ? 'class="active"' : '' %>><%= i %></a>
@@ -116,8 +114,6 @@
       <% if (page < totalPages) { %>
         <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + (page + 1) : (category ? '/category/' + category + '?page=' + (page + 1) : '?page=' + (page + 1)) %>">下一页</a>
       <% } %>
-
-      <!-- 输入跳转 -->
       <form action="<%= searchKeyword ? '/search' : (category ? '/category/' + category : '/') %>" method="GET" class="page-jump">
         <input type="number" name="page" min="1" max="<%= totalPages %>" value="<%= page %>" placeholder="页码">
         <% if (searchKeyword) { %>
