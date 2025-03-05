@@ -297,20 +297,32 @@ app.post('/articles/:id/like', ensureAuthenticated, async (req, res) => {
   try {
     const article = await Article.findById(req.params.id);
     if (!article) {
-      return res.status(404).send('文章未找到');
+      return res.status(404).json({ success: false, message: '文章未找到' });
     }
-    // 检查用户是否已点赞
-    if (!article.likedBy.includes(req.user._id)) {
-      article.likes += 1; // 增加点赞数
-      article.likedBy.push(req.user._id); // 记录用户 ID
-      await article.save();
+    const userId = req.user._id.toString();
+    const hasLiked = article.likedBy.some(id => id.toString() === userId);
+    
+    if (hasLiked) {
+      // 取消点赞
+      article.likes -= 1;
+      article.likedBy = article.likedBy.filter(id => id.toString() !== userId);
+    } else {
+      // 点赞
+      article.likes += 1;
+      article.likedBy.push(req.user._id);
     }
-    res.redirect(req.headers.referer || `/articles/${req.params.id}`);
+    await article.save();
+    res.json({ 
+      success: true, 
+      likes: article.likes, 
+      hasLiked: !hasLiked // 返回切换后的状态
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).send('服务器错误');
+    res.status(500).json({ success: false, message: '服务器错误' });
   }
 });
+
 
 // 启动服务器
 app.listen(3000, () => {

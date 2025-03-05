@@ -43,11 +43,11 @@
             发布于: <%= article.createdAt.toLocaleDateString() %> | 
             分类: <%= article.category %> | 
             阅读: <%= article.views %> 次 | 
-            点赞: <%= article.likes %>
+            点赞: <span class="like-count"><%= article.likes %></span>
             <% if (user) { %>
-              <form action="/articles/<%= article._id %>/like" method="POST" style="display:inline;" <%= article.likedBy.includes(user._id) ? 'class="liked"' : '' %>>
-                <button type="submit" class="like-btn" <%= article.likedBy.includes(user._id) ? 'disabled' : '' %>>👍</button>
-              </form>
+              <button class="like-btn" data-id="<%= article._id %>" data-liked="<%= article.likedBy.includes(user._id) ? 'true' : 'false' %>">
+                <%= article.likedBy.includes(user._id) ? '👎 取消点赞' : '👍 点赞' %>
+              </button>
             <% } %>
           </small>
           <p>标签: <%= article.tags.length > 0 ? article.tags.join(', ') : '无' %></p>
@@ -87,6 +87,37 @@
         </li>
       <% }) %>
     </ul>
+    <script>
+      document.querySelectorAll('.like-btn').forEach(button => {
+        button.addEventListener('click', async () => {
+          const articleId = button.getAttribute('data-id');
+          const isLiked = button.getAttribute('data-liked') === 'true';
+          
+          try {
+            const response = await fetch(`/articles/${articleId}/like`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await response.json();
+            
+            if (data.success) {
+              // 更新点赞数
+              const likeCount = button.closest('small').querySelector('.like-count');
+              likeCount.textContent = data.likes;
+              
+              // 更新按钮状态
+              button.setAttribute('data-liked', data.hasLiked);
+              button.textContent = data.hasLiked ? '👎 取消点赞' : '👍 点赞';
+            } else {
+              alert(data.message || '操作失败');
+            }
+          } catch (err) {
+            console.error(err);
+            alert('网络错误');
+          }
+        });
+      });
+    </script>
     <div class="pagination">
       <% if (page > 1) { %>
         <a href="<%= searchKeyword ? '/search?keyword=' + searchKeyword + '&page=' + (page - 1) : (category ? '/category/' + category + '?page=' + (page - 1) : '?page=' + (page - 1)) %>">上一页</a>
