@@ -10,7 +10,7 @@
 <body>
   <div class="container">
     <h1>编辑文章</h1>
-    <form action="/articles/<%= article._id %>" method="POST" class="form-container">
+    <form action="/articles/<%= article._id %>" method="POST" class="form-container" enctype="multipart/form-data">
       <div>
         <label for="title">标题:</label>
         <input type="text" id="title" name="title" value="<%= article.title %>" required>
@@ -30,6 +30,14 @@
       <div>
         <label for="content">内容:</label>
         <textarea id="content" name="content" required><%= article.content %></textarea>
+      </div>
+      <div>
+        <label for="thumbnail">预览图:</label>
+        <% if (article.thumbnail) { %>
+          <img src="<%= article.thumbnail %>" alt="当前预览图" class="thumbnail-preview">
+          <p>上传新图将替换当前预览图</p>
+        <% } %>
+        <input type="file" id="thumbnail" name="thumbnail" accept="image/*">
       </div>
       <div class="checkbox-group">
         <label class="checkbox-label">

@@ -8,17 +8,33 @@
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1><%= article.title %> <%- article.isPinned ? '<span class="pinned">置顶</span>' : '' %></h1>
-    <p><%= article.content %></p>
-    <small>
-      发布于: <%= article.createdAt.toLocaleDateString() %> | 
-      分类: <%= article.category %> | 
-      阅读: <%= article.views %> 次
-    </small>
-    <p>标签: <%= article.tags.length > 0 ? article.tags.join(', ') : '无' %></p>
+  <div class="container article-container">
+    <!-- 文章头部：预览图和标题 -->
+    <div class="article-header">
+      <% if (article.thumbnail) { %>
+        <img src="<%= article.thumbnail %>" alt="<%= article.title %> 预览图" class="article-thumbnail">
+      <% } %>
+      <h1><%- article.title %> <%- article.isPinned ? '<span class="pinned">置顶</span>' : '' %></h1>
+    </div>
+
+    <!-- 元数据 -->
+    <div class="article-meta">
+      <small>
+        发布于: <%= article.createdAt.toLocaleDateString() %> | 
+        分类: <%= article.category %> | 
+        阅读: <%= article.views %> 次
+      </small>
+      <p class="tags">标签: <%= article.tags.length > 0 ? article.tags.join(', ') : '无' %></p>
+    </div>
+
+    <!-- 正文 -->
+    <div class="article-content">
+      <p><%= article.content %></p>
+    </div>
+
+    <!-- 操作按钮 -->
     <% if (user && article.author && article.author.toString() === user._id.toString()) { %>
-      <div class="actions">
+      <div class="article-actions">
         <a href="/articles/<%= article._id %>/edit" class="edit-btn">编辑</a>
         <form action="/articles/<%= article._id %>/delete" method="POST" style="display:inline;">
           <button type="submit" class="delete-btn">删除</button>
@@ -26,6 +42,8 @@
         <button class="comment-toggle-btn" data-article-id="<%= article._id %>">评论</button>
       </div>
     <% } %>
+
+    <!-- 评论区域 -->
     <div class="comments" id="comments-<%= article._id %>" style="display: none;">
       <h3>评论</h3>
       <% if (comments && comments.length > 0) { %>
@@ -46,7 +64,7 @@
         <p>暂无评论</p>
       <% } %>
       <% if (user) { %>
-        <form action="/articles/<%= article._id %>/comment" method="POST" class="form-container">
+        <form action="/articles/<%= article._id %>/comment" method="POST" class="form-container comment-form">
           <textarea name="content" placeholder="写下你的评论..." required></textarea>
           <button type="submit" class="btn-comment">发表评论</button>
         </form>
@@ -54,8 +72,13 @@
         <p><a href="/login">登录</a> 后即可发表评论</p>
       <% } %>
     </div>
-    <a href="/" class="btn-secondary1">返回首页</a>
+
+    <!-- 返回按钮 -->
+    <div class="article-footer">
+      <a href="/" class="btn-secondary">返回首页</a>
+    </div>
   </div>
+
   <script>
     document.querySelectorAll('.comment-toggle-btn').forEach(button => {
       button.addEventListener('click', () => {

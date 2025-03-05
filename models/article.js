@@ -7,9 +7,10 @@ const articleSchema = new mongoose.Schema({
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   category: { type: String, required: true },
   tags: [{ type: String }],
-  isDraft: { type: Boolean, default: true }, // 新增草稿字段，默认 true
-  isPinned: { type: Boolean, default: false } ,// 新增置顶字段，默认 false
-  views: { type: Number, default: 0 }
+  isDraft: { type: Boolean, default: true },
+  isPinned: { type: Boolean, default: false },
+  views: { type: Number, default: 0 },
+  thumbnail: { type: String } // 新增预览图字段，存储图片路径
 });
 
 module.exports = mongoose.model('Article', articleSchema);

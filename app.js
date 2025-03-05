@@ -8,23 +8,39 @@ const Article = require('./models/article');
 const User = require('./models/user');
 const app = express();
 const Comment = require('./models/comment');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 // 连接 MongoDB
 mongoose.connect('mongodb://localhost/blog', { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB 连接成功'))
   .catch(err => console.log(err));
 
+
+const uploadDir = path.join(__dirname, 'public/uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+  // 配置 multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/uploads'); // 存储目录
+  },
+  filename: (req, file, cb) => {
+    cb(null, `thumbnail-${Date.now()}${path.extname(file.originalname)}`); // 文件名格式
+  }
+});
+const upload = multer({ storage });
+
 // 中间件设置
-app.set('view engine', 'ejs');
-app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
-app.use(session({
-  secret: 'your-secret-key', // 替换为安全的密钥
-  resave: false,
-  saveUninitialized: false
-}));
+app.use(express.urlencoded({ extended: true }));
+app.use(session({ secret: 'secret', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.set('view engine', 'ejs');
 
 // Passport 配置
 passport.use(new LocalStrategy(
@@ -234,7 +250,8 @@ app.get('/search', async (req, res) => {
 
 
 // 路由：创建文章
-app.post('/articles', ensureAuthenticated, async (req, res) => {
+app.post('/articles', ensureAuthenticated, upload.single('thumbnail'), async (req, res) => {
+  console.log('Uploaded file:', req.file); 
   const { title, content, category, tags, isDraft, isPinned } = req.body;
   const article = new Article({
     title,
@@ -242,15 +259,16 @@ app.post('/articles', ensureAuthenticated, async (req, res) => {
     category,
     tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
     author: req.user._id,
-    isDraft: isDraft === 'on', // 复选框返回 'on' 或 undefined
-    isPinned: isPinned === 'on'
+    isDraft: isDraft === 'on',
+    isPinned: isPinned === 'on',
+    thumbnail: req.file ? `/uploads/${req.file.filename}` : null
   });
   await article.save();
   res.redirect('/');
 });
 
 // 路由：更新文章
-app.post('/articles/:id', ensureAuthenticated, async (req, res) => {
+app.post('/articles/:id', ensureAuthenticated, upload.single('thumbnail'), async (req, res) => {
   const { title, content, category, tags, isDraft, isPinned } = req.body;
   const article = await Article.findById(req.params.id);
   if (!article || article.author.toString() !== req.user._id.toString()) {
@@ -261,8 +279,9 @@ app.post('/articles/:id', ensureAuthenticated, async (req, res) => {
     content,
     category,
     tags: tags ? tags.split(',').map(tag => tag.trim()) : [],
-    isDraft: isDraft === 'on' ? true : false, // 显式设置为 true 或 false
-    isPinned: isPinned === 'on' ? true : false
+    isDraft: isDraft === 'on' ? true : false,
+    isPinned: isPinned === 'on' ? true : false,
+    thumbnail: req.file ? `/uploads/${req.file.filename}` : article.thumbnail // 如果未上传新图，保留原图
   });
   res.redirect('/');
 });
