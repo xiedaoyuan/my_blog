@@ -22,7 +22,13 @@
       <small>
         发布于: <%= article.createdAt.toLocaleDateString() %> | 
         分类: <%= article.category %> | 
-        阅读: <%= article.views %> 次
+        阅读: <%= article.views %> 次 | 
+        点赞: <%= article.likes %>
+        <% if (user) { %>
+          <form action="/articles/<%= article._id %>/like" method="POST" style="display:inline;" <%= article.likedBy.includes(user._id) ? 'class="liked"' : '' %>>
+            <button type="submit" class="like-btn" <%= article.likedBy.includes(user._id) ? 'disabled' : '' %>>👍</button>
+          </form>
+        <% } %>
       </small>
       <p class="tags">标签: <%= article.tags.length > 0 ? article.tags.join(', ') : '无' %></p>
     </div>

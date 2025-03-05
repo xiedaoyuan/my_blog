@@ -845,6 +845,36 @@ textarea {
   box-shadow: 0 2px 5px rgba(0, 191, 255, 0.2);
 }
 
+/* 点赞按钮样式 */
+.like-btn {
+  padding: 8px 16px;
+  background: linear-gradient(90deg, #ff4500, #ff8c00);
+  color: #ffffff;
+  border: 1px solid rgba(255, 69, 0, 0.8);
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.9em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(255, 69, 0, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.like-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(255, 69, 0, 0.5);
+  background: linear-gradient(90deg, #ff8c00, #ff4500);
+}
+
+.like-btn:disabled {
+  background: linear-gradient(90deg, #a9a9a9, #d3d3d3); /* 灰色表示已点赞 */
+  border: 1px solid rgba(169, 169, 169, 0.8);
+  box-shadow: none;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 /* 响应式设计 */
 @media (max-width: 600px) {
   .container {

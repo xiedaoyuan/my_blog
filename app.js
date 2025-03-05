@@ -292,6 +292,26 @@ app.get('/drafts', ensureAuthenticated, async (req, res) => {
   const comments = await Comment.find().populate('author', 'username');
   res.render('drafts', { articles, user: req.user, comments });
 });
+
+app.post('/articles/:id/like', ensureAuthenticated, async (req, res) => {
+  try {
+    const article = await Article.findById(req.params.id);
+    if (!article) {
+      return res.status(404).send('文章未找到');
+    }
+    // 检查用户是否已点赞
+    if (!article.likedBy.includes(req.user._id)) {
+      article.likes += 1; // 增加点赞数
+      article.likedBy.push(req.user._id); // 记录用户 ID
+      await article.save();
+    }
+    res.redirect(req.headers.referer || `/articles/${req.params.id}`);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('服务器错误');
+  }
+});
+
 // 启动服务器
 app.listen(3000, () => {
   console.log('服务器运行在 http://localhost:3000');

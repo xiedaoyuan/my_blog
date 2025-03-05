@@ -10,7 +10,9 @@ const articleSchema = new mongoose.Schema({
   isDraft: { type: Boolean, default: true },
   isPinned: { type: Boolean, default: false },
   views: { type: Number, default: 0 },
-  thumbnail: { type: String } // 新增预览图字段，存储图片路径
+  thumbnail: { type: String } ,
+  likes: { type: Number, default: 0 },
+  likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 });
 
 module.exports = mongoose.model('Article', articleSchema);
