@@ -11,10 +11,17 @@
   <div class="container">
     <h1>博客文章</h1>
     <% if (user) { %>
-      <p>欢迎, <%= user.username %>! <a href="/logout"class="logout-btn">退出</a></p>
-      <a href="/create"class="create-btn">写新文章</a> | <a href="/drafts"class="drafts-btn">我的草稿</a>
+      <div class="nav-actions">
+        <a href="/create" class="create-btn">写新文章</a>
+        <a href="/drafts" class="drafts-btn">我的草稿</a>
+        <a href="/settings" class="settings-btn">设置</a>
+        <a href="/logout" class="logout-btn">退出</a>
+      </div>
     <% } else { %>
-      <p><a href="/login"class="login-btn">登录</a> | <a href="/register"class="register-btn">注册</a></p>
+      <div class="nav-actions">
+        <a href="/login" class="login-btn">登录</a>
+        <a href="/register" class="register-btn">注册</a>
+      </div>
     <% } %>
     <!-- 搜索表单和后续内容保持不变 -->
     <form action="/search" method="GET" class="search-form">

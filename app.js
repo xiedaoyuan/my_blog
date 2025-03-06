@@ -323,6 +323,35 @@ app.post('/articles/:id/like', ensureAuthenticated, async (req, res) => {
   }
 });
 
+app.get('/settings', ensureAuthenticated, (req, res) => {
+  res.render('settings', { user: req.user });
+});
+
+// 路由：处理用户设置更新
+app.post('/settings', ensureAuthenticated, async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findById(req.user._id);
+    
+    if (username && username !== user.username) {
+      user.username = username;
+    }
+    if (password) {
+      user.password = await bcrypt.hash(password, 10);
+    }
+    await user.save();
+    
+    // 更新 session 中的用户信息
+    req.login(user, err => {
+      if (err) return res.status(500).send('服务器错误');
+      res.redirect('/settings');
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('服务器错误');
+  }
+});
+
 
 // 启动服务器
 app.listen(3000, () => {

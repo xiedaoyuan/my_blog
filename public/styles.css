@@ -868,6 +868,27 @@ textarea {
   background: linear-gradient(90deg, #ff8c00, #ff4500);
 }
 
+.nav-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.settings-btn{
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #f70404, #f09815);
+  color: #ffffff;
+  border: 1px solid rgba(169, 28, 160, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(34, 47, 148, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  text-decoration: none;
+}
 
 /* 响应式设计 */
 @media (max-width: 600px) {

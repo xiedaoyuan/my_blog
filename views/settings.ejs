@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>用户设置</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>用户设置</h1>
+    <form action="/settings" method="POST" class="form-container">
+      <div>
+        <label for="username">用户名:</label>
+        <input type="text" id="username" name="username" value="<%= user.username %>" required>
+      </div>
+      <div>
+        <label for="password">新密码（留空则不修改）:</label>
+        <input type="password" id="password" name="password" placeholder="输入新密码">
+      </div>
+      <div class="button-group">
+        <button type="submit" class="btn-primary">保存设置</button>
+        <a href="/" class="btn-secondary">返回首页</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
