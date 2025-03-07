@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
     cb(null, 'public/uploads'); // 存储目录
   },
   filename: (req, file, cb) => {
-    cb(null, `thumbnail-${Date.now()}${path.extname(file.originalname)}`); // 文件名格式
+    cb(null, `avatar-${Date.now()}${path.extname(file.originalname)}`);
   }
 });
 const upload = multer({ storage });
@@ -47,9 +47,12 @@ passport.use(new LocalStrategy(
   async (username, password, done) => {
     try {
       const user = await User.findOne({ username });
-      if (!user) return done(null, false, { message: '用户不存在' });
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) return done(null, false, { message: '密码错误' });
+      if (!user) {
+        return done(null, false, { message: '用户不存在' });
+      }
+      if (!await bcrypt.compare(password, user.password)) {
+        return done(null, false, { message: '密码错误' });
+      }
       return done(null, user);
     } catch (err) {
       return done(err);
@@ -71,28 +74,69 @@ function ensureAuthenticated(req, res, next) {
 
 // 路由：登录页面
 app.get('/login', (req, res) => {
-  res.render('login');
+  const message = req.session.passport && req.session.passport.message;
+  const username = req.session.username || '';
+  delete req.session.passport;
+  delete req.session.username;
+  res.render('login', { message, username });
 });
 
 // 路由：处理登录
-app.post('/login', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/login'
-}));
+app.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user, info) => {
+    if (err) return next(err);
+    if (!user) {
+      req.session.passport = { message: info.message }; // 存储错误消息
+      req.session.username = req.body.username; // 保留用户名
+      return res.redirect('/login');
+    }
+    req.logIn(user, err => {
+      if (err) return next(err);
+      return res.redirect('/');
+    });
+  })(req, res, next);
+});
+
+app.use((req, res, next) => {
+  if (req.session.messages) {
+    req.session.message = req.session.messages[req.session.messages.length - 1];
+    delete req.session.messages; // 清空 Passport 的消息
+  }
+  next();
+});
 
 // 路由：注册页面
 app.get('/register', (req, res) => {
-  res.render('register');
+  const message = req.session.message || '';
+  const password = req.session.password || ''; // 保留密码
+  delete req.session.message;
+  delete req.session.password;
+  res.render('register', { message, password });
 });
 
-// 路由：处理注册
 app.post('/register', async (req, res) => {
-  const { username, password } = req.body;
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = new User({ username, password: hashedPassword });
-  await user.save();
-  res.redirect('/login');
+  try {
+    const { username, password } = req.body;
+    const existingUser = await User.findOne({ username });
+    
+    if (existingUser) {
+      req.session.message = '用户名已存在，请更换用户名';
+      req.session.password = password; // 保留密码
+      return res.redirect('/register');
+    }
+    
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({ username, password: hashedPassword });
+    await user.save();
+    delete req.session.password; // 注册成功后清空
+    res.redirect('/login');
+  } catch (err) {
+    console.error(err);
+    req.session.message = '注册失败，请重试';
+    res.redirect('/register');
+  }
 });
+
 
 // 路由：退出登录
 app.get('/logout', (req, res) => {
@@ -324,24 +368,39 @@ app.post('/articles/:id/like', ensureAuthenticated, async (req, res) => {
 });
 
 app.get('/settings', ensureAuthenticated, (req, res) => {
-  res.render('settings', { user: req.user });
+  const message = req.session.message;
+  delete req.session.message; // 清空消息，避免重复显示
+  res.render('settings', { user: req.user, message });
 });
 
 // 路由：处理用户设置更新
-app.post('/settings', ensureAuthenticated, async (req, res) => {
+app.post('/settings', ensureAuthenticated, upload.single('avatar'), async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findById(req.user._id);
-    
+
+    // 检查密码是否与旧密码相同
+    if (password && await bcrypt.compare(password, user.password)) {
+      req.session.message = '新密码不能与旧密码相同';
+      return res.redirect('/settings');
+    }
+
+    // 更新用户名
     if (username && username !== user.username) {
       user.username = username;
     }
+    // 更新密码
     if (password) {
       user.password = await bcrypt.hash(password, 10);
     }
+    // 更新头像
+    if (req.file) {
+      user.avatar = `/uploads/${req.file.filename}`;
+    }
     await user.save();
-    
-    // 更新 session 中的用户信息
+
+    // 更新 session 并设置成功消息
+    req.session.message = '设置已保存';
     req.login(user, err => {
       if (err) return res.status(500).send('服务器错误');
       res.redirect('/settings');

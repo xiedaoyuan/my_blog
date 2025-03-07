@@ -10,18 +10,37 @@
 <body>
   <div class="container">
     <h1>注册</h1>
-    <form action="/register" method="POST">
+    <% if (message) { %>
+      <p class="error-message"><%= message %></p>
+    <% } %>
+    <form action="/register" method="POST" class="form-container">
       <div>
         <label for="username">用户名:</label>
-        <input type="text" id="username" name="username" required>
+        <input type="text" id="username" name="username" required autocomplete="off">
       </div>
       <div>
         <label for="password">密码:</label>
-        <input type="password" id="password" name="password" required>
+        <input type="password" id="password" name="password" value="<%= password || '' %>" required autocomplete="off">
       </div>
-      <button type="submit"class="reg-btn">注册</button>
+      <div class="button-group">
+        <button type="submit" class="btn-primary">注册</button>
+        <a href="/login" class="btn-secondary">登录</a>
+      </div>
     </form>
-    <a href="/login"class="login-link">已有账户？去登录</a>
   </div>
+  <script>
+    // 页面加载时检查消息并清空用户名框
+    window.addEventListener('load', () => {
+      const message = document.querySelector('.error-message');
+      const usernameInput = document.getElementById('username');
+      if (message && message.textContent === '用户名已存在，请更换用户名') {
+        usernameInput.value = ''; // 清空用户名框
+      }
+      // 3 秒后隐藏提示消息
+      setTimeout(() => {
+        if (message) message.style.display = 'none';
+      }, 3000);
+    });
+  </script>
 </body>
 </html>

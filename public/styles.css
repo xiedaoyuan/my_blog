@@ -890,6 +890,41 @@ textarea {
   text-decoration: none;
 }
 
+/* 头像预览样式 */
+.avatar-preview {
+  max-width: 100px;
+  height: auto;
+  border-radius: 50%;
+  margin: 10px 0;
+  box-shadow: 0 2px 5px rgba(0, 191, 255, 0.3);
+}
+
+/* 提示消息样式 */
+.message {
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 1.1em;
+}
+.success-message {
+  background: rgba(0, 255, 0, 0.2);
+  color: #00ff00;
+  border: 1px solid rgba(0, 255, 0, 0.5);
+}
+/* 错误提示样式 */
+.error-message {
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 1.1em;
+  background: rgba(255, 0, 0, 0.2);
+  color: #ff0000;
+  border: 1px solid rgba(255, 0, 0, 0.5);
+}
+
+
 /* 响应式设计 */
 @media (max-width: 600px) {
   .container {

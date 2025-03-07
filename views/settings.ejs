@@ -10,7 +10,10 @@
 <body>
   <div class="container">
     <h1>用户设置</h1>
-    <form action="/settings" method="POST" class="form-container">
+    <% if (message) { %>
+      <p class="message <%= message.includes('不能') ? 'error-message' : 'success-message' %>"><%= message %></p>
+    <% } %>
+    <form action="/settings" method="POST" class="form-container" enctype="multipart/form-data">
       <div>
         <label for="username">用户名:</label>
         <input type="text" id="username" name="username" value="<%= user.username %>" required>
@@ -19,11 +22,31 @@
         <label for="password">新密码（留空则不修改）:</label>
         <input type="password" id="password" name="password" placeholder="输入新密码">
       </div>
+      <div>
+        <label for="avatar">头像:</label>
+        <% if (user.avatar) { %>
+          <img src="<%= user.avatar %>" alt="当前头像" class="avatar-preview">
+          <p>上传新头像将替换当前头像</p>
+        <% } %>
+        <input type="file" id="avatar" name="avatar" accept="image/*">
+      </div>
       <div class="button-group">
         <button type="submit" class="btn-primary">保存设置</button>
         <a href="/" class="btn-secondary">返回首页</a>
       </div>
     </form>
   </div>
+  <script>
+    // 如果有错误消息，清空密码输入框
+    const message = document.querySelector('.error-message');
+    if (message && message.textContent.includes('新密码不能与旧密码相同')) {
+      document.getElementById('password').value = '';
+    }
+    // 3 秒后隐藏提示消息
+    setTimeout(() => {
+      const msg = document.querySelector('.message');
+      if (msg) msg.style.display = 'none';
+    }, 3000);
+  </script>
 </body>
 </html>
