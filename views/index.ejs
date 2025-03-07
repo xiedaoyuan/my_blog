@@ -45,7 +45,6 @@
             <img src="<%= article.thumbnail %>" alt="<%= article.title %> 预览图" class="article-thumbnail1">
           <% } %>
           <h2><a href="/articles/<%= article._id %>"class="article-title"><%- article.title %></a> <%- article.isPinned ? '<span class="pinned">置顶</span>' : '' %></h2>
-          <p><%= article.content %></p>
           <small>
             发布于: <%= article.createdAt.toLocaleDateString() %> | 
             分类: <%= article.category %> | 
