@@ -411,6 +411,33 @@ app.post('/settings', ensureAuthenticated, upload.single('avatar'), async (req, 
   }
 });
 
+// 文章归档路由
+app.get('/archive', async (req, res) => {
+  try {
+    // 查询所有非草稿文章，按创建时间降序排序
+    const articles = await Article.find({ isDraft: false }).sort({ createdAt: -1 });
+    
+    // 按年月归档文章
+    const archive = {};
+    articles.forEach(article => {
+      const date = new Date(article.createdAt);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1; // 月份从0开始，需加1
+      const key = `${year}-${month < 10 ? '0' : ''}${month}`; // 格式如 "2023-09"
+      
+      if (!archive[key]) {
+        archive[key] = [];
+      }
+      archive[key].push(article);
+    });
+    
+    // 渲染归档页面
+    res.render('archive', { archive });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('服务器错误');
+  }
+});
 
 // 启动服务器
 app.listen(3000, () => {

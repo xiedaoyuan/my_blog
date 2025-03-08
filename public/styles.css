@@ -924,6 +924,20 @@ textarea {
   border: 1px solid rgba(255, 0, 0, 0.5);
 }
 
+.archive-btn{
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #1ea6c9, #582791);
+  color: #ffffff;
+  border: 1px solid rgba(26, 211, 118, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(148, 30, 46, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  text-decoration: none;
+}
 
 /* 响应式设计 */
 @media (max-width: 600px) {

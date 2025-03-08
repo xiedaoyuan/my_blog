@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>文章归档</title>
+  <link rel="stylesheet" href="/styles.css"> 
+</head>
+<body>
+  <div class="container">
+    <h1>文章归档</h1>
+    <% for (const [key, articles] of Object.entries(archive)) { %>
+      <h2><%= key %></h2>
+      <ul>
+        <% articles.forEach(article => { %>
+          <li>
+            <a href="/articles/<%= article._id %>"class="article-title"><%= article.title %></a>
+            <small>（<%= article.createdAt.toLocaleDateString() %>）</small>
+          </li>
+        <% }) %>
+      </ul>
+    <% } %>
+    <a href="/"class="btn-secondary">返回首页</a>
+  </div>
+</body>
+</html>
