@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>标签云</title>
+  <link rel="stylesheet" href="/styles.css"> <!-- 假设你有样式文件 -->
+  <style>
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .tag {
+      padding: 5px 10px;
+      background: rgba(0, 191, 255, 0.2);
+      border-radius: 15px;
+      transition: transform 0.3s;
+    }
+    .tag:hover {
+      transform: scale(1.1);
+    }
+    /* 根据频率调整大小 */
+    .tag-frequency-1 { font-size: 1em; }
+    .tag-frequency-2 { font-size: 1.2em; }
+    .tag-frequency-3 { font-size: 1.4em; }
+    .tag-frequency-4 { font-size: 1.6em; }
+    .tag-frequency-5 { font-size: 1.8em; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>标签云</h1>
+    <div class="tag-cloud">
+      <% tags.forEach(([tag, frequency]) => { %>
+        <a href="/tag/<%= tag %>" class="tag tag-frequency-<%= Math.min(5, frequency) %>">
+          <%= tag %> (<%= frequency %>)
+        </a>
+      <% }) %>
+    </div>
+    <a href="/"class="btn-secondary2">返回首页</a>
+  </div>
+</body>
+</html>

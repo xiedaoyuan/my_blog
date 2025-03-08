@@ -439,6 +439,44 @@ app.get('/archive', async (req, res) => {
   }
 });
 
+// 标签云路由
+app.get('/tags', async (req, res) => {
+  try {
+    // 查询所有非草稿文章的标签
+    const articles = await Article.find({ isDraft: false }, 'tags');
+    
+    // 统计标签频率
+    const tagFrequency = {};
+    articles.forEach(article => {
+      article.tags.forEach(tag => {
+        tagFrequency[tag] = (tagFrequency[tag] || 0) + 1;
+      });
+    });
+    
+    // 转换为数组并按频率排序（可选）
+    const sortedTags = Object.entries(tagFrequency).sort((a, b) => b[1] - a[1]);
+    
+    // 渲染标签云页面
+    res.render('tags', { tags: sortedTags });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('服务器错误');
+  }
+});
+
+// 按标签筛选文章路由
+app.get('/tag/:tag', async (req, res) => {
+  try {
+    // 查询带有指定标签的非草稿文章
+    const articles = await Article.find({ tags: req.params.tag, isDraft: false }).sort({ createdAt: -1 });
+    // 渲染文章列表（假设使用 index.ejs）
+    res.render('index', { articles, user: req.user, searchKeyword: '', category: null, comments: [], page: 1, totalPages: 1 });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('服务器错误');
+  }
+});
+
 // 启动服务器
 app.listen(3000, () => {
   console.log('服务器运行在 http://localhost:3000');

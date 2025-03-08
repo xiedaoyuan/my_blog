@@ -211,6 +211,24 @@ textarea {
   top: 20px;
 }
 
+.btn-secondary2 {
+  display: inline-block;
+  padding: 14px 28px;
+  background: rgba(30, 41, 59, 0.9);
+  color: #f1f5f9;
+  border: 1px solid rgba(0, 191, 255, 0.8);
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: 1.1em;
+  text-align: center;
+  text-decoration: none;
+  box-shadow: 0 0 5px rgba(0, 191, 255, 0.2);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  position: absolute;
+  left: 47%;
+  bottom: 10%;
+}
+
 .btn-secondary:hover {
   background: rgba(30, 41, 59, 1);
   transform: translateY(-4px);
@@ -935,6 +953,51 @@ textarea {
   font-size: 1em;
   text-align: center;
   box-shadow: 0 0 5px rgba(148, 30, 46, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
+  text-decoration: none;
+}
+
+/* 标签云容器样式 */
+.tag-cloud {
+  display: flex;
+  flex-wrap: wrap; /* 自动换行 */
+  justify-content: center; /* 居中对齐 */
+  gap: 15px; /* 标签间距 */
+  padding: 20px;
+  background: linear-gradient(135deg, #11ec65, #e7f70a); /* 柔和背景渐变 */
+  border-radius: 15px; /* 圆角 */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+}
+
+/* 单个标签样式 */
+.tag {
+  padding: 8px 15px;
+  background: linear-gradient(90deg, #00bfff, #1e90ff); /* 蓝色渐变 */
+  color: #ffffff; /* 白色文字 */
+  border-radius: 20px; /* 圆角 */
+  text-decoration: none; /* 去除下划线 */
+  transition: transform 0.3s, box-shadow 0.3s; /* 平滑过渡效果 */
+  font-family: 'Roboto', sans-serif; /* 美观字体 */
+}
+
+/* 鼠标悬停效果 */
+.tag:hover {
+  transform: translateY(-3px); /* 上移3像素 */
+  box-shadow: 0 4px 10px rgba(0, 191, 255, 0.5); /* 蓝色阴影 */
+}
+
+
+.tags-btn{
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(90deg, #a54f88, #6f0fdd);
+  color: #ffffff;
+  border: 1px solid rgba(12, 150, 241, 0.8);
+  border-radius: 25px;
+  font-weight: 700;
+  font-size: 1em;
+  text-align: center;
+  box-shadow: 0 0 5px rgba(43, 238, 5, 0.3);
   transition: transform 0.3s, box-shadow 0.3s, background 0.3s;
   text-decoration: none;
 }
