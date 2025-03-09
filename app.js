@@ -11,6 +11,7 @@ const Comment = require('./models/comment');
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
+const marked = require('marked');
 
 // 连接 MongoDB
 mongoose.connect('mongodb://localhost/blog', { useNewUrlParser: true, useUnifiedTopology: true })
@@ -156,13 +157,14 @@ app.get('/create', ensureAuthenticated, (req, res) => {
 app.get('/articles/:id', async (req, res) => {
   try {
     const article = await Article.findById(req.params.id);
+    const htmlContent = marked.parse(article.content); 
     if (!article) {
       return res.status(404).send('文章未找到');
     }
     article.views += 1; // 增加阅读计数
     await article.save();
     const comments = await Comment.find({ article: req.params.id }).populate('author', 'username');
-    res.render('article', { article, comments, user: req.user });
+    res.render('article', { article, htmlContent,comments, user: req.user });
   } catch (err) {
     console.error(err);
     res.status(500).send('服务器错误');

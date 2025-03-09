@@ -14,9 +14,11 @@
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
+    "marked": "^4.3.0",
     "mongoose": "^8.11.0",
     "multer": "^1.4.5-lts.1",
     "passport": "^0.7.0",
-    "passport-local": "^1.0.0"
+    "passport-local": "^1.0.0",
+    "simplemde": "^1.11.2"
   }
 }

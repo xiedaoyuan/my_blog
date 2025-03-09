@@ -6,6 +6,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
   <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
 </head>
 <body>
   <div class="container">
@@ -29,6 +30,7 @@
       </div>
       <div>
         <label for="content">内容:</label>
+        <textarea id="markdown-editor"><%= article.content %></textarea>
         <textarea id="content" name="content" required><%= article.content %></textarea>
       </div>
       <div>
@@ -55,5 +57,17 @@
       </div>
     </form>
   </div>
+  <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+  <script>
+    // 初始化 SimpleMDE 并加载现有内容
+    const simplemde = new SimpleMDE({ 
+      element: document.getElementById('markdown-editor'),
+      spellChecker: false
+    });
+    // 表单提交时同步 Markdown 内容
+    document.querySelector('form').addEventListener('submit', () => {
+      document.querySelector('textarea[name="content"]').value = simplemde.value();
+    });
+  </script>
 </body>
 </html>
