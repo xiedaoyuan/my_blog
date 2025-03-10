@@ -59,15 +59,15 @@
             <% } %>
           </small>
           <p>标签: <%= article.tags.length > 0 ? article.tags.join(', ') : '无' %></p>
-          <% if (user && article.author && article.author.toString() === user._id.toString()) { %>
             <div class="actions">
+              <% if (user && article.author && article.author.toString() === user._id.toString()) { %>
               <a href="/articles/<%= article._id %>/edit" class="edit-btn">编辑</a>
               <form action="/articles/<%= article._id %>/delete" method="POST" style="display:inline;">
                 <button type="submit" class="delete-btn">删除</button>
               </form>
+              <% } %>
               <button class="comment-toggle-btn" data-article-id="<%= article._id %>">评论</button>
             </div>
-          <% } %>
           <div class="comments" id="comments-<%= article._id %>" style="display: none;">
             <h3>评论</h3>
             <% comments.filter(comment => comment.article.toString() === article._id.toString()).forEach(comment => { %>
