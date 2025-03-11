@@ -1002,6 +1002,43 @@ textarea {
   text-decoration: none;
 }
 
+.editor-toolbar {
+  background: #05fa88; /* 深灰色背景，适合科技感主题 */
+  border: 1px solid #4a5568; /* 边框增加区分度 */
+  border-radius: 8px; /* 圆角设计 */
+}
+
+/* 工具栏按钮样式 */
+.editor-toolbar a {
+  color: #f6f8fa !important; /* 浅色图标，确保可见 */
+  opacity: 0.9; /* 轻微透明 */
+  transition: all 0.3s; /* 平滑过渡 */
+}
+
+/* 鼠标悬停时高亮 */
+.editor-toolbar a:hover {
+  color: #00bfff !important; /* 蓝色高亮，匹配科技感 */
+  background: rgba(0, 191, 255, 0.2); /* 浅蓝背景 */
+}
+
+/* 激活状态（如加粗按钮被选中时） */
+.editor-toolbar a.active {
+  color: #00bfff !important;
+  background: rgba(0, 191, 255, 0.3);
+}
+
+/* 分隔线样式 */
+.editor-toolbar .separator {
+  border-left: 1px solid #4a5568; /* 分隔线颜色 */
+}
+
+/* 禁用按钮（如无 redo 时的按钮） */
+.editor-toolbar a.disabled {
+  color: #718096 !important; /* 灰色表示禁用 */
+  opacity: 0.5;
+}
+
+
 /* 响应式设计 */
 @media (max-width: 600px) {
   .container {
